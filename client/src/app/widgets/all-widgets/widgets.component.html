@@ -1,0 +1,68 @@
+<div class="flex items-center justify-center" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+</div>
+<div class="w-full mx-auto border rounded p-4 sm:border-0" *ngIf="!loading">
+    <h2 class="text-center text-2xl py-4">Widgets</h2>
+    <button mat-raised-button color="primary" type="button" (click)="navigateToAdd()" class="my-4">Add widget</button>
+    <button mat-raised-button color="primary" type="button" (click)="clearFilters()" class="my-4 ml-2">Clear filters</button>
+    <div class="flex flex-col max-w-lg">
+        <mat-form-field appearance="fill">
+            <mat-label>Filter manufacturer</mat-label>
+            <mat-select [(ngModel)]="selectedManufacturerFilter" (ngModelChange)="getWidgets('', selectedManufacturerFilter)">
+                <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.id">{{ manufacturer.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Filter widget type</mat-label>
+            <mat-select [(ngModel)]="selectedWidgetTypeFilter" (ngModelChange)="getWidgets(selectedWidgetTypeFilter, '')">
+                <mat-option *ngFor="let type of widgetTypes" [value]="type.id">{{ type.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="widgets">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Id</th>
+            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="stockLevel">
+            <th mat-header-cell *matHeaderCellDef>Stock Level</th>
+            <td mat-cell *matCellDef="let element">{{ element.stockLevel }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Widget type</th>
+            <td mat-cell *matCellDef="let element">{{ element.type.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="manufacturer">
+            <th mat-header-cell *matHeaderCellDef>Manufacturer</th>
+            <td mat-cell *matCellDef="let element">
+                <a [routerLink]="'/manufacturers/edit/' + element.manufacturer.id" class="underline">{{ element.manufacturer.name }}</a>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button (click)="navigateToEdit(element.id)">Edit</button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button (click)="deleteWidget(element)">Delete</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+    </table>
+</div>

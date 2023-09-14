@@ -1,0 +1,41 @@
+{
+  "name": "joes-widgets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "license": "AGPL-version-3.0",
+  "private": false,
+  "engines": {
+    "node": ">= 14.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": "",
+  "keywords": [],
+  "author": {
+    "name": "",
+    "email": "",
+    "url": ""
+  },
+  "contributors": [],
+  "scripts": {
+    "dev": "ts-node index.ts",
+    "test": ""
+  },
+  "dependencies": {
+    "@apollo/server": "^4.9.3",
+    "@neo4j/graphql": "^4.1.1",
+    "dotenv": "^16.3.1",
+    "graphql": "^16.8.0",
+    "neo4j-driver": "^5.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}

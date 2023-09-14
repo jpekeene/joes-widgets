@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    Joe's Widgets
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item [routerLink]="['/widgets']">Widgets</button>
+  <button mat-menu-item [routerLink]="['/manufacturers']">Manufacturers</button>
+  <button mat-menu-item [routerLink]="['/widget-types']">Widget Types</button>
+</mat-menu>

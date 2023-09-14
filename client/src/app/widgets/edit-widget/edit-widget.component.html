@@ -1,0 +1,53 @@
+<div class="flex items-center justify-center" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="flex justify-center h-screen">
+    <form
+        *ngIf="widgetForm"
+        [formGroup]="widgetForm"
+        (ngSubmit)="saveWidget()"
+        class="flex flex-col w-full max-w-screen-md mx-auto border rounded p-4 sm:border-0"
+    >
+        <div class="flex justify-between items-center mb-4">
+            <button mat-icon-button (click)="goBack()" class="text-gray-500 hover:text-gray-700">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <h2 class="text-center text-2xl" *ngIf="widgetId; else addTitle">Edit Widget</h2>
+            <div></div>
+        </div>
+
+        <ng-template #addTitle>
+            <h2 class="text-center mb-4 text-2xl">Add Widget</h2>
+        </ng-template>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Widget Name</mat-label>
+            <input matInput formControlName="name" />
+            <mat-error *ngIf="widgetForm.get('name')?.hasError('required')">Name is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Stock Level</mat-label>
+            <input type="number" matInput formControlName="stockLevel" />
+            <mat-error *ngIf="widgetForm.get('stockLevel')?.hasError('required')">Stock Level is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Manufacturer</mat-label>
+            <mat-select formControlName="manufacturerId">
+                <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.id">{{ manufacturer.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="widgetForm.get('manufacturerId')?.hasError('required')">Manufacturer is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Widget Type</mat-label>
+            <mat-select formControlName="widgetTypeId">
+                <mat-option *ngFor="let type of widgetTypes" [value]="type.id">{{ type.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="widgetForm.get('widgetTypeId')?.hasError('required')">Type is required</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Save</button>
+    </form>
+</div>

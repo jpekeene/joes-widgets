@@ -1,0 +1,1084 @@
+type Query {
+  manufacturers(where: ManufacturerWhere, options: ManufacturerOptions): [Manufacturer!]!
+  manufacturersConnection(first: Int, after: String, where: ManufacturerWhere, sort: [ManufacturerSort]): ManufacturersConnection!
+  manufacturersAggregate(where: ManufacturerWhere): ManufacturerAggregateSelection!
+  widgets(where: WidgetWhere, options: WidgetOptions): [Widget!]!
+  widgetsConnection(first: Int, after: String, where: WidgetWhere, sort: [WidgetSort]): WidgetsConnection!
+  widgetsAggregate(where: WidgetWhere): WidgetAggregateSelection!
+  widgetTypes(where: WidgetTypeWhere, options: WidgetTypeOptions): [WidgetType!]!
+  widgetTypesConnection(first: Int, after: String, where: WidgetTypeWhere, sort: [WidgetTypeSort]): WidgetTypesConnection!
+  widgetTypesAggregate(where: WidgetTypeWhere): WidgetTypeAggregateSelection!
+}
+
+type Mutation {
+  createManufacturers(input: [ManufacturerCreateInput!]!): CreateManufacturersMutationResponse!
+  deleteManufacturers(where: ManufacturerWhere, delete: ManufacturerDeleteInput): DeleteInfo!
+  updateManufacturers(where: ManufacturerWhere, update: ManufacturerUpdateInput, connect: ManufacturerConnectInput, disconnect: ManufacturerDisconnectInput, create: ManufacturerRelationInput, delete: ManufacturerDeleteInput): UpdateManufacturersMutationResponse!
+  createWidgets(input: [WidgetCreateInput!]!): CreateWidgetsMutationResponse!
+  deleteWidgets(where: WidgetWhere, delete: WidgetDeleteInput): DeleteInfo!
+  updateWidgets(where: WidgetWhere, update: WidgetUpdateInput, connect: WidgetConnectInput, disconnect: WidgetDisconnectInput, create: WidgetRelationInput, delete: WidgetDeleteInput): UpdateWidgetsMutationResponse!
+  createWidgetTypes(input: [WidgetTypeCreateInput!]!): CreateWidgetTypesMutationResponse!
+  deleteWidgetTypes(where: WidgetTypeWhere, delete: WidgetTypeDeleteInput): DeleteInfo!
+  updateWidgetTypes(where: WidgetTypeWhere, update: WidgetTypeUpdateInput, connect: WidgetTypeConnectInput, disconnect: WidgetTypeDisconnectInput, create: WidgetTypeRelationInput, delete: WidgetTypeDeleteInput): UpdateWidgetTypesMutationResponse!
+}
+
+enum SortDirection {
+  """Sort by field values in ascending order."""
+  ASC
+
+  """Sort by field values in descending order."""
+  DESC
+}
+
+type CreateInfo {
+  bookmark: String @deprecated(reason: "This field has been deprecated because bookmarks are now handled by the driver.")
+  nodesCreated: Int!
+  relationshipsCreated: Int!
+}
+
+type CreateManufacturersMutationResponse {
+  info: CreateInfo!
+  manufacturers: [Manufacturer!]!
+}
+
+type CreateWidgetsMutationResponse {
+  info: CreateInfo!
+  widgets: [Widget!]!
+}
+
+type CreateWidgetTypesMutationResponse {
+  info: CreateInfo!
+  widgetTypes: [WidgetType!]!
+}
+
+type DeleteInfo {
+  bookmark: String @deprecated(reason: "This field has been deprecated because bookmarks are now handled by the driver.")
+  nodesDeleted: Int!
+  relationshipsDeleted: Int!
+}
+
+type IDAggregateSelectionNonNullable {
+  shortest: ID!
+  longest: ID!
+}
+
+type IntAggregateSelectionNullable {
+  max: Int
+  min: Int
+  average: Float
+  sum: Int
+}
+
+type Manufacturer {
+  id: ID!
+  name: String
+  widgets(where: WidgetWhere, options: WidgetOptions, directed: Boolean = true): [Widget!]!
+  widgetsAggregate(where: WidgetWhere, directed: Boolean = true): ManufacturerWidgetWidgetsAggregationSelection
+  widgetsConnection(where: ManufacturerWidgetsConnectionWhere, first: Int, after: String, directed: Boolean = true, sort: [ManufacturerWidgetsConnectionSort!]): ManufacturerWidgetsConnection!
+}
+
+type ManufacturerAggregateSelection {
+  count: Int!
+  id: IDAggregateSelectionNonNullable!
+  name: StringAggregateSelectionNullable!
+}
+
+type ManufacturerEdge {
+  cursor: String!
+  node: Manufacturer!
+}
+
+type ManufacturersConnection {
+  totalCount: Int!
+  pageInfo: PageInfo!
+  edges: [ManufacturerEdge!]!
+}
+
+type ManufacturerWidgetsConnection {
+  edges: [ManufacturerWidgetsRelationship!]!
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
+type ManufacturerWidgetsRelationship {
+  cursor: String!
+  node: Widget!
+}
+
+type ManufacturerWidgetWidgetsAggregationSelection {
+  count: Int!
+  node: ManufacturerWidgetWidgetsNodeAggregateSelection
+}
+
+type ManufacturerWidgetWidgetsNodeAggregateSelection {
+  id: IDAggregateSelectionNonNullable!
+  name: StringAggregateSelectionNullable!
+  stockLevel: IntAggregateSelectionNullable!
+}
+
+"""Pagination information (Relay)"""
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type StringAggregateSelectionNullable {
+  shortest: String
+  longest: String
+}
+
+type UpdateInfo {
+  bookmark: String @deprecated(reason: "This field has been deprecated because bookmarks are now handled by the driver.")
+  nodesCreated: Int!
+  nodesDeleted: Int!
+  relationshipsCreated: Int!
+  relationshipsDeleted: Int!
+}
+
+type UpdateManufacturersMutationResponse {
+  info: UpdateInfo!
+  manufacturers: [Manufacturer!]!
+}
+
+type UpdateWidgetsMutationResponse {
+  info: UpdateInfo!
+  widgets: [Widget!]!
+}
+
+type UpdateWidgetTypesMutationResponse {
+  info: UpdateInfo!
+  widgetTypes: [WidgetType!]!
+}
+
+type Widget {
+  id: ID!
+  name: String
+  stockLevel: Int
+  manufacturer(where: ManufacturerWhere, options: ManufacturerOptions, directed: Boolean = true): Manufacturer!
+  manufacturerAggregate(where: ManufacturerWhere, directed: Boolean = true): WidgetManufacturerManufacturerAggregationSelection
+  type(where: WidgetTypeWhere, options: WidgetTypeOptions, directed: Boolean = true): WidgetType!
+  typeAggregate(where: WidgetTypeWhere, directed: Boolean = true): WidgetWidgetTypeTypeAggregationSelection
+  manufacturerConnection(where: WidgetManufacturerConnectionWhere, first: Int, after: String, directed: Boolean = true, sort: [WidgetManufacturerConnectionSort!]): WidgetManufacturerConnection!
+  typeConnection(where: WidgetTypeConnectionWhere, first: Int, after: String, directed: Boolean = true, sort: [WidgetTypeConnectionSort!]): WidgetTypeConnection!
+}
+
+type WidgetAggregateSelection {
+  count: Int!
+  id: IDAggregateSelectionNonNullable!
+  name: StringAggregateSelectionNullable!
+  stockLevel: IntAggregateSelectionNullable!
+}
+
+type WidgetEdge {
+  cursor: String!
+  node: Widget!
+}
+
+type WidgetManufacturerConnection {
+  edges: [WidgetManufacturerRelationship!]!
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
+type WidgetManufacturerManufacturerAggregationSelection {
+  count: Int!
+  node: WidgetManufacturerManufacturerNodeAggregateSelection
+}
+
+type WidgetManufacturerManufacturerNodeAggregateSelection {
+  id: IDAggregateSelectionNonNullable!
+  name: StringAggregateSelectionNullable!
+}
+
+type WidgetManufacturerRelationship {
+  cursor: String!
+  node: Manufacturer!
+}
+
+type WidgetsConnection {
+  totalCount: Int!
+  pageInfo: PageInfo!
+  edges: [WidgetEdge!]!
+}
+
+type WidgetType {
+  id: ID!
+  name: String
+  widgets(where: WidgetWhere, options: WidgetOptions, directed: Boolean = true): [Widget!]!
+  widgetsAggregate(where: WidgetWhere, directed: Boolean = true): WidgetTypeWidgetWidgetsAggregationSelection
+  widgetsConnection(where: WidgetTypeWidgetsConnectionWhere, first: Int, after: String, directed: Boolean = true, sort: [WidgetTypeWidgetsConnectionSort!]): WidgetTypeWidgetsConnection!
+}
+
+type WidgetTypeAggregateSelection {
+  count: Int!
+  id: IDAggregateSelectionNonNullable!
+  name: StringAggregateSelectionNullable!
+}
+
+type WidgetTypeConnection {
+  edges: [WidgetTypeRelationship!]!
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
+type WidgetTypeEdge {
+  cursor: String!
+  node: WidgetType!
+}
+
+type WidgetTypeRelationship {
+  cursor: String!
+  node: WidgetType!
+}
+
+type WidgetTypesConnection {
+  totalCount: Int!
+  pageInfo: PageInfo!
+  edges: [WidgetTypeEdge!]!
+}
+
+type WidgetTypeWidgetsConnection {
+  edges: [WidgetTypeWidgetsRelationship!]!
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
+type WidgetTypeWidgetsRelationship {
+  cursor: String!
+  node: Widget!
+}
+
+type WidgetTypeWidgetWidgetsAggregationSelection {
+  count: Int!
+  node: WidgetTypeWidgetWidgetsNodeAggregateSelection
+}
+
+type WidgetTypeWidgetWidgetsNodeAggregateSelection {
+  id: IDAggregateSelectionNonNullable!
+  name: StringAggregateSelectionNullable!
+  stockLevel: IntAggregateSelectionNullable!
+}
+
+type WidgetWidgetTypeTypeAggregationSelection {
+  count: Int!
+  node: WidgetWidgetTypeTypeNodeAggregateSelection
+}
+
+type WidgetWidgetTypeTypeNodeAggregateSelection {
+  id: IDAggregateSelectionNonNullable!
+  name: StringAggregateSelectionNullable!
+}
+
+input ManufacturerConnectInput {
+  widgets: [ManufacturerWidgetsConnectFieldInput!]
+}
+
+input ManufacturerConnectWhere {
+  node: ManufacturerWhere!
+}
+
+input ManufacturerCreateInput {
+  name: String
+  widgets: ManufacturerWidgetsFieldInput
+}
+
+input ManufacturerDeleteInput {
+  widgets: [ManufacturerWidgetsDeleteFieldInput!]
+}
+
+input ManufacturerDisconnectInput {
+  widgets: [ManufacturerWidgetsDisconnectFieldInput!]
+}
+
+input ManufacturerOptions {
+  """
+  Specify one or more ManufacturerSort objects to sort Manufacturers by. The sorts will be applied in the order in which they are arranged in the array.
+  """
+  sort: [ManufacturerSort!]
+  limit: Int
+  offset: Int
+}
+
+input ManufacturerRelationInput {
+  widgets: [ManufacturerWidgetsCreateFieldInput!]
+}
+
+"""
+Fields to sort Manufacturers by. The order in which sorts are applied is not guaranteed when specifying many fields in one ManufacturerSort object.
+"""
+input ManufacturerSort {
+  id: SortDirection
+  name: SortDirection
+}
+
+input ManufacturerUpdateInput {
+  name: String
+  widgets: [ManufacturerWidgetsUpdateFieldInput!]
+}
+
+input ManufacturerWhere {
+  OR: [ManufacturerWhere!]
+  AND: [ManufacturerWhere!]
+  NOT: ManufacturerWhere
+  id: ID
+  id_NOT: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_IN: [ID!]
+  id_NOT_IN: [ID!] @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_CONTAINS: ID
+  id_STARTS_WITH: ID
+  id_ENDS_WITH: ID
+  id_NOT_CONTAINS: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_NOT_STARTS_WITH: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_NOT_ENDS_WITH: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name: String
+  name_NOT: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_IN: [String]
+  name_NOT_IN: [String] @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_CONTAINS: String
+  name_STARTS_WITH: String
+  name_ENDS_WITH: String
+  name_NOT_CONTAINS: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_NOT_STARTS_WITH: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_NOT_ENDS_WITH: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  widgets: WidgetWhere @deprecated(reason: "Use `widgets_SOME` instead.")
+  widgets_NOT: WidgetWhere @deprecated(reason: "Use `widgets_NONE` instead.")
+  widgetsAggregate: ManufacturerWidgetsAggregateInput
+
+  """
+  Return Manufacturers where all of the related Widgets match this filter
+  """
+  widgets_ALL: WidgetWhere
+
+  """
+  Return Manufacturers where none of the related Widgets match this filter
+  """
+  widgets_NONE: WidgetWhere
+
+  """
+  Return Manufacturers where one of the related Widgets match this filter
+  """
+  widgets_SINGLE: WidgetWhere
+
+  """
+  Return Manufacturers where some of the related Widgets match this filter
+  """
+  widgets_SOME: WidgetWhere
+  widgetsConnection: ManufacturerWidgetsConnectionWhere @deprecated(reason: "Use `widgetsConnection_SOME` instead.")
+  widgetsConnection_NOT: ManufacturerWidgetsConnectionWhere @deprecated(reason: "Use `widgetsConnection_NONE` instead.")
+
+  """
+  Return Manufacturers where all of the related ManufacturerWidgetsConnections match this filter
+  """
+  widgetsConnection_ALL: ManufacturerWidgetsConnectionWhere
+
+  """
+  Return Manufacturers where none of the related ManufacturerWidgetsConnections match this filter
+  """
+  widgetsConnection_NONE: ManufacturerWidgetsConnectionWhere
+
+  """
+  Return Manufacturers where one of the related ManufacturerWidgetsConnections match this filter
+  """
+  widgetsConnection_SINGLE: ManufacturerWidgetsConnectionWhere
+
+  """
+  Return Manufacturers where some of the related ManufacturerWidgetsConnections match this filter
+  """
+  widgetsConnection_SOME: ManufacturerWidgetsConnectionWhere
+}
+
+input ManufacturerWidgetsAggregateInput {
+  count: Int
+  count_LT: Int
+  count_LTE: Int
+  count_GT: Int
+  count_GTE: Int
+  AND: [ManufacturerWidgetsAggregateInput!]
+  OR: [ManufacturerWidgetsAggregateInput!]
+  NOT: ManufacturerWidgetsAggregateInput
+  node: ManufacturerWidgetsNodeAggregationWhereInput
+}
+
+input ManufacturerWidgetsConnectFieldInput {
+  where: WidgetConnectWhere
+  connect: [WidgetConnectInput!]
+
+  """
+  Whether or not to overwrite any matching relationship with the new properties.
+  """
+  overwrite: Boolean! = true
+}
+
+input ManufacturerWidgetsConnectionSort {
+  node: WidgetSort
+}
+
+input ManufacturerWidgetsConnectionWhere {
+  AND: [ManufacturerWidgetsConnectionWhere!]
+  OR: [ManufacturerWidgetsConnectionWhere!]
+  NOT: ManufacturerWidgetsConnectionWhere
+  node: WidgetWhere
+  node_NOT: WidgetWhere @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+}
+
+input ManufacturerWidgetsCreateFieldInput {
+  node: WidgetCreateInput!
+}
+
+input ManufacturerWidgetsDeleteFieldInput {
+  where: ManufacturerWidgetsConnectionWhere
+  delete: WidgetDeleteInput
+}
+
+input ManufacturerWidgetsDisconnectFieldInput {
+  where: ManufacturerWidgetsConnectionWhere
+  disconnect: WidgetDisconnectInput
+}
+
+input ManufacturerWidgetsFieldInput {
+  create: [ManufacturerWidgetsCreateFieldInput!]
+  connect: [ManufacturerWidgetsConnectFieldInput!]
+}
+
+input ManufacturerWidgetsNodeAggregationWhereInput {
+  AND: [ManufacturerWidgetsNodeAggregationWhereInput!]
+  OR: [ManufacturerWidgetsNodeAggregationWhereInput!]
+  NOT: ManufacturerWidgetsNodeAggregationWhereInput
+  id_EQUAL: ID @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_EQUAL: String @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_EQUAL: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_EQUAL: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_EQUAL: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_EQUAL: Float
+  name_LONGEST_LENGTH_EQUAL: Int
+  name_SHORTEST_LENGTH_EQUAL: Int
+  name_GT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_GT: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_GT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_GT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_GT: Float
+  name_LONGEST_LENGTH_GT: Int
+  name_SHORTEST_LENGTH_GT: Int
+  name_GTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_GTE: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_GTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_GTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_GTE: Float
+  name_LONGEST_LENGTH_GTE: Int
+  name_SHORTEST_LENGTH_GTE: Int
+  name_LT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_LT: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_LT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_LT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_LT: Float
+  name_LONGEST_LENGTH_LT: Int
+  name_SHORTEST_LENGTH_LT: Int
+  name_LTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_LTE: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_LTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_LTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_LTE: Float
+  name_LONGEST_LENGTH_LTE: Int
+  name_SHORTEST_LENGTH_LTE: Int
+  stockLevel_EQUAL: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  stockLevel_AVERAGE_EQUAL: Float
+  stockLevel_MIN_EQUAL: Int
+  stockLevel_MAX_EQUAL: Int
+  stockLevel_SUM_EQUAL: Int
+  stockLevel_GT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  stockLevel_AVERAGE_GT: Float
+  stockLevel_MIN_GT: Int
+  stockLevel_MAX_GT: Int
+  stockLevel_SUM_GT: Int
+  stockLevel_GTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  stockLevel_AVERAGE_GTE: Float
+  stockLevel_MIN_GTE: Int
+  stockLevel_MAX_GTE: Int
+  stockLevel_SUM_GTE: Int
+  stockLevel_LT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  stockLevel_AVERAGE_LT: Float
+  stockLevel_MIN_LT: Int
+  stockLevel_MAX_LT: Int
+  stockLevel_SUM_LT: Int
+  stockLevel_LTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  stockLevel_AVERAGE_LTE: Float
+  stockLevel_MIN_LTE: Int
+  stockLevel_MAX_LTE: Int
+  stockLevel_SUM_LTE: Int
+}
+
+input ManufacturerWidgetsUpdateConnectionInput {
+  node: WidgetUpdateInput
+}
+
+input ManufacturerWidgetsUpdateFieldInput {
+  where: ManufacturerWidgetsConnectionWhere
+  create: [ManufacturerWidgetsCreateFieldInput!]
+  connect: [ManufacturerWidgetsConnectFieldInput!]
+  update: ManufacturerWidgetsUpdateConnectionInput
+  delete: [ManufacturerWidgetsDeleteFieldInput!]
+  disconnect: [ManufacturerWidgetsDisconnectFieldInput!]
+}
+
+input WidgetConnectInput {
+  manufacturer: WidgetManufacturerConnectFieldInput
+  type: WidgetTypeConnectFieldInput
+}
+
+input WidgetConnectWhere {
+  node: WidgetWhere!
+}
+
+input WidgetCreateInput {
+  name: String
+  stockLevel: Int
+  manufacturer: WidgetManufacturerFieldInput
+  type: WidgetTypeFieldInput
+}
+
+input WidgetDeleteInput {
+  manufacturer: WidgetManufacturerDeleteFieldInput
+  type: WidgetTypeDeleteFieldInput
+}
+
+input WidgetDisconnectInput {
+  manufacturer: WidgetManufacturerDisconnectFieldInput
+  type: WidgetTypeDisconnectFieldInput
+}
+
+input WidgetManufacturerAggregateInput {
+  count: Int
+  count_LT: Int
+  count_LTE: Int
+  count_GT: Int
+  count_GTE: Int
+  AND: [WidgetManufacturerAggregateInput!]
+  OR: [WidgetManufacturerAggregateInput!]
+  NOT: WidgetManufacturerAggregateInput
+  node: WidgetManufacturerNodeAggregationWhereInput
+}
+
+input WidgetManufacturerConnectFieldInput {
+  where: ManufacturerConnectWhere
+  connect: ManufacturerConnectInput
+
+  """
+  Whether or not to overwrite any matching relationship with the new properties.
+  """
+  overwrite: Boolean! = true
+}
+
+input WidgetManufacturerConnectionSort {
+  node: ManufacturerSort
+}
+
+input WidgetManufacturerConnectionWhere {
+  AND: [WidgetManufacturerConnectionWhere!]
+  OR: [WidgetManufacturerConnectionWhere!]
+  NOT: WidgetManufacturerConnectionWhere
+  node: ManufacturerWhere
+  node_NOT: ManufacturerWhere @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+}
+
+input WidgetManufacturerCreateFieldInput {
+  node: ManufacturerCreateInput!
+}
+
+input WidgetManufacturerDeleteFieldInput {
+  where: WidgetManufacturerConnectionWhere
+  delete: ManufacturerDeleteInput
+}
+
+input WidgetManufacturerDisconnectFieldInput {
+  where: WidgetManufacturerConnectionWhere
+  disconnect: ManufacturerDisconnectInput
+}
+
+input WidgetManufacturerFieldInput {
+  create: WidgetManufacturerCreateFieldInput
+  connect: WidgetManufacturerConnectFieldInput
+}
+
+input WidgetManufacturerNodeAggregationWhereInput {
+  AND: [WidgetManufacturerNodeAggregationWhereInput!]
+  OR: [WidgetManufacturerNodeAggregationWhereInput!]
+  NOT: WidgetManufacturerNodeAggregationWhereInput
+  id_EQUAL: ID @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_EQUAL: String @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_EQUAL: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_EQUAL: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_EQUAL: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_EQUAL: Float
+  name_LONGEST_LENGTH_EQUAL: Int
+  name_SHORTEST_LENGTH_EQUAL: Int
+  name_GT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_GT: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_GT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_GT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_GT: Float
+  name_LONGEST_LENGTH_GT: Int
+  name_SHORTEST_LENGTH_GT: Int
+  name_GTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_GTE: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_GTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_GTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_GTE: Float
+  name_LONGEST_LENGTH_GTE: Int
+  name_SHORTEST_LENGTH_GTE: Int
+  name_LT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_LT: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_LT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_LT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_LT: Float
+  name_LONGEST_LENGTH_LT: Int
+  name_SHORTEST_LENGTH_LT: Int
+  name_LTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_LTE: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_LTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_LTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_LTE: Float
+  name_LONGEST_LENGTH_LTE: Int
+  name_SHORTEST_LENGTH_LTE: Int
+}
+
+input WidgetManufacturerUpdateConnectionInput {
+  node: ManufacturerUpdateInput
+}
+
+input WidgetManufacturerUpdateFieldInput {
+  where: WidgetManufacturerConnectionWhere
+  create: WidgetManufacturerCreateFieldInput
+  connect: WidgetManufacturerConnectFieldInput
+  update: WidgetManufacturerUpdateConnectionInput
+  delete: WidgetManufacturerDeleteFieldInput
+  disconnect: WidgetManufacturerDisconnectFieldInput
+}
+
+input WidgetOptions {
+  """
+  Specify one or more WidgetSort objects to sort Widgets by. The sorts will be applied in the order in which they are arranged in the array.
+  """
+  sort: [WidgetSort!]
+  limit: Int
+  offset: Int
+}
+
+input WidgetRelationInput {
+  manufacturer: WidgetManufacturerCreateFieldInput
+  type: WidgetTypeCreateFieldInput
+}
+
+"""
+Fields to sort Widgets by. The order in which sorts are applied is not guaranteed when specifying many fields in one WidgetSort object.
+"""
+input WidgetSort {
+  id: SortDirection
+  name: SortDirection
+  stockLevel: SortDirection
+}
+
+input WidgetTypeAggregateInput {
+  count: Int
+  count_LT: Int
+  count_LTE: Int
+  count_GT: Int
+  count_GTE: Int
+  AND: [WidgetTypeAggregateInput!]
+  OR: [WidgetTypeAggregateInput!]
+  NOT: WidgetTypeAggregateInput
+  node: WidgetTypeNodeAggregationWhereInput
+}
+
+input WidgetTypeConnectFieldInput {
+  where: WidgetTypeConnectWhere
+  connect: WidgetTypeConnectInput
+
+  """
+  Whether or not to overwrite any matching relationship with the new properties.
+  """
+  overwrite: Boolean! = true
+}
+
+input WidgetTypeConnectInput {
+  widgets: [WidgetTypeWidgetsConnectFieldInput!]
+}
+
+input WidgetTypeConnectionSort {
+  node: WidgetTypeSort
+}
+
+input WidgetTypeConnectionWhere {
+  AND: [WidgetTypeConnectionWhere!]
+  OR: [WidgetTypeConnectionWhere!]
+  NOT: WidgetTypeConnectionWhere
+  node: WidgetTypeWhere
+  node_NOT: WidgetTypeWhere @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+}
+
+input WidgetTypeConnectWhere {
+  node: WidgetTypeWhere!
+}
+
+input WidgetTypeCreateFieldInput {
+  node: WidgetTypeCreateInput!
+}
+
+input WidgetTypeCreateInput {
+  name: String
+  widgets: WidgetTypeWidgetsFieldInput
+}
+
+input WidgetTypeDeleteFieldInput {
+  where: WidgetTypeConnectionWhere
+  delete: WidgetTypeDeleteInput
+}
+
+input WidgetTypeDeleteInput {
+  widgets: [WidgetTypeWidgetsDeleteFieldInput!]
+}
+
+input WidgetTypeDisconnectFieldInput {
+  where: WidgetTypeConnectionWhere
+  disconnect: WidgetTypeDisconnectInput
+}
+
+input WidgetTypeDisconnectInput {
+  widgets: [WidgetTypeWidgetsDisconnectFieldInput!]
+}
+
+input WidgetTypeFieldInput {
+  create: WidgetTypeCreateFieldInput
+  connect: WidgetTypeConnectFieldInput
+}
+
+input WidgetTypeNodeAggregationWhereInput {
+  AND: [WidgetTypeNodeAggregationWhereInput!]
+  OR: [WidgetTypeNodeAggregationWhereInput!]
+  NOT: WidgetTypeNodeAggregationWhereInput
+  id_EQUAL: ID @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_EQUAL: String @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_EQUAL: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_EQUAL: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_EQUAL: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_EQUAL: Float
+  name_LONGEST_LENGTH_EQUAL: Int
+  name_SHORTEST_LENGTH_EQUAL: Int
+  name_GT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_GT: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_GT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_GT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_GT: Float
+  name_LONGEST_LENGTH_GT: Int
+  name_SHORTEST_LENGTH_GT: Int
+  name_GTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_GTE: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_GTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_GTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_GTE: Float
+  name_LONGEST_LENGTH_GTE: Int
+  name_SHORTEST_LENGTH_GTE: Int
+  name_LT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_LT: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_LT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_LT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_LT: Float
+  name_LONGEST_LENGTH_LT: Int
+  name_SHORTEST_LENGTH_LT: Int
+  name_LTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_LTE: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_LTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_LTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_LTE: Float
+  name_LONGEST_LENGTH_LTE: Int
+  name_SHORTEST_LENGTH_LTE: Int
+}
+
+input WidgetTypeOptions {
+  """
+  Specify one or more WidgetTypeSort objects to sort WidgetTypes by. The sorts will be applied in the order in which they are arranged in the array.
+  """
+  sort: [WidgetTypeSort!]
+  limit: Int
+  offset: Int
+}
+
+input WidgetTypeRelationInput {
+  widgets: [WidgetTypeWidgetsCreateFieldInput!]
+}
+
+"""
+Fields to sort WidgetTypes by. The order in which sorts are applied is not guaranteed when specifying many fields in one WidgetTypeSort object.
+"""
+input WidgetTypeSort {
+  id: SortDirection
+  name: SortDirection
+}
+
+input WidgetTypeUpdateConnectionInput {
+  node: WidgetTypeUpdateInput
+}
+
+input WidgetTypeUpdateFieldInput {
+  where: WidgetTypeConnectionWhere
+  create: WidgetTypeCreateFieldInput
+  connect: WidgetTypeConnectFieldInput
+  update: WidgetTypeUpdateConnectionInput
+  delete: WidgetTypeDeleteFieldInput
+  disconnect: WidgetTypeDisconnectFieldInput
+}
+
+input WidgetTypeUpdateInput {
+  name: String
+  widgets: [WidgetTypeWidgetsUpdateFieldInput!]
+}
+
+input WidgetTypeWhere {
+  OR: [WidgetTypeWhere!]
+  AND: [WidgetTypeWhere!]
+  NOT: WidgetTypeWhere
+  id: ID
+  id_NOT: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_IN: [ID!]
+  id_NOT_IN: [ID!] @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_CONTAINS: ID
+  id_STARTS_WITH: ID
+  id_ENDS_WITH: ID
+  id_NOT_CONTAINS: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_NOT_STARTS_WITH: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_NOT_ENDS_WITH: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name: String
+  name_NOT: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_IN: [String]
+  name_NOT_IN: [String] @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_CONTAINS: String
+  name_STARTS_WITH: String
+  name_ENDS_WITH: String
+  name_NOT_CONTAINS: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_NOT_STARTS_WITH: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_NOT_ENDS_WITH: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  widgets: WidgetWhere @deprecated(reason: "Use `widgets_SOME` instead.")
+  widgets_NOT: WidgetWhere @deprecated(reason: "Use `widgets_NONE` instead.")
+  widgetsAggregate: WidgetTypeWidgetsAggregateInput
+
+  """Return WidgetTypes where all of the related Widgets match this filter"""
+  widgets_ALL: WidgetWhere
+
+  """Return WidgetTypes where none of the related Widgets match this filter"""
+  widgets_NONE: WidgetWhere
+
+  """Return WidgetTypes where one of the related Widgets match this filter"""
+  widgets_SINGLE: WidgetWhere
+
+  """Return WidgetTypes where some of the related Widgets match this filter"""
+  widgets_SOME: WidgetWhere
+  widgetsConnection: WidgetTypeWidgetsConnectionWhere @deprecated(reason: "Use `widgetsConnection_SOME` instead.")
+  widgetsConnection_NOT: WidgetTypeWidgetsConnectionWhere @deprecated(reason: "Use `widgetsConnection_NONE` instead.")
+
+  """
+  Return WidgetTypes where all of the related WidgetTypeWidgetsConnections match this filter
+  """
+  widgetsConnection_ALL: WidgetTypeWidgetsConnectionWhere
+
+  """
+  Return WidgetTypes where none of the related WidgetTypeWidgetsConnections match this filter
+  """
+  widgetsConnection_NONE: WidgetTypeWidgetsConnectionWhere
+
+  """
+  Return WidgetTypes where one of the related WidgetTypeWidgetsConnections match this filter
+  """
+  widgetsConnection_SINGLE: WidgetTypeWidgetsConnectionWhere
+
+  """
+  Return WidgetTypes where some of the related WidgetTypeWidgetsConnections match this filter
+  """
+  widgetsConnection_SOME: WidgetTypeWidgetsConnectionWhere
+}
+
+input WidgetTypeWidgetsAggregateInput {
+  count: Int
+  count_LT: Int
+  count_LTE: Int
+  count_GT: Int
+  count_GTE: Int
+  AND: [WidgetTypeWidgetsAggregateInput!]
+  OR: [WidgetTypeWidgetsAggregateInput!]
+  NOT: WidgetTypeWidgetsAggregateInput
+  node: WidgetTypeWidgetsNodeAggregationWhereInput
+}
+
+input WidgetTypeWidgetsConnectFieldInput {
+  where: WidgetConnectWhere
+  connect: [WidgetConnectInput!]
+
+  """
+  Whether or not to overwrite any matching relationship with the new properties.
+  """
+  overwrite: Boolean! = true
+}
+
+input WidgetTypeWidgetsConnectionSort {
+  node: WidgetSort
+}
+
+input WidgetTypeWidgetsConnectionWhere {
+  AND: [WidgetTypeWidgetsConnectionWhere!]
+  OR: [WidgetTypeWidgetsConnectionWhere!]
+  NOT: WidgetTypeWidgetsConnectionWhere
+  node: WidgetWhere
+  node_NOT: WidgetWhere @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+}
+
+input WidgetTypeWidgetsCreateFieldInput {
+  node: WidgetCreateInput!
+}
+
+input WidgetTypeWidgetsDeleteFieldInput {
+  where: WidgetTypeWidgetsConnectionWhere
+  delete: WidgetDeleteInput
+}
+
+input WidgetTypeWidgetsDisconnectFieldInput {
+  where: WidgetTypeWidgetsConnectionWhere
+  disconnect: WidgetDisconnectInput
+}
+
+input WidgetTypeWidgetsFieldInput {
+  create: [WidgetTypeWidgetsCreateFieldInput!]
+  connect: [WidgetTypeWidgetsConnectFieldInput!]
+}
+
+input WidgetTypeWidgetsNodeAggregationWhereInput {
+  AND: [WidgetTypeWidgetsNodeAggregationWhereInput!]
+  OR: [WidgetTypeWidgetsNodeAggregationWhereInput!]
+  NOT: WidgetTypeWidgetsNodeAggregationWhereInput
+  id_EQUAL: ID @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_EQUAL: String @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_EQUAL: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_EQUAL: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_EQUAL: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_EQUAL: Float
+  name_LONGEST_LENGTH_EQUAL: Int
+  name_SHORTEST_LENGTH_EQUAL: Int
+  name_GT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_GT: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_GT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_GT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_GT: Float
+  name_LONGEST_LENGTH_GT: Int
+  name_SHORTEST_LENGTH_GT: Int
+  name_GTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_GTE: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_GTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_GTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_GTE: Float
+  name_LONGEST_LENGTH_GTE: Int
+  name_SHORTEST_LENGTH_GTE: Int
+  name_LT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_LT: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_LT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_LT: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_LT: Float
+  name_LONGEST_LENGTH_LT: Int
+  name_SHORTEST_LENGTH_LT: Int
+  name_LTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  name_AVERAGE_LTE: Float @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_LONGEST_LTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_SHORTEST_LTE: Int @deprecated(reason: "Please use the explicit _LENGTH version for string aggregation.")
+  name_AVERAGE_LENGTH_LTE: Float
+  name_LONGEST_LENGTH_LTE: Int
+  name_SHORTEST_LENGTH_LTE: Int
+  stockLevel_EQUAL: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  stockLevel_AVERAGE_EQUAL: Float
+  stockLevel_MIN_EQUAL: Int
+  stockLevel_MAX_EQUAL: Int
+  stockLevel_SUM_EQUAL: Int
+  stockLevel_GT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  stockLevel_AVERAGE_GT: Float
+  stockLevel_MIN_GT: Int
+  stockLevel_MAX_GT: Int
+  stockLevel_SUM_GT: Int
+  stockLevel_GTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  stockLevel_AVERAGE_GTE: Float
+  stockLevel_MIN_GTE: Int
+  stockLevel_MAX_GTE: Int
+  stockLevel_SUM_GTE: Int
+  stockLevel_LT: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  stockLevel_AVERAGE_LT: Float
+  stockLevel_MIN_LT: Int
+  stockLevel_MAX_LT: Int
+  stockLevel_SUM_LT: Int
+  stockLevel_LTE: Int @deprecated(reason: "Aggregation filters that are not relying on an aggregating function will be deprecated.")
+  stockLevel_AVERAGE_LTE: Float
+  stockLevel_MIN_LTE: Int
+  stockLevel_MAX_LTE: Int
+  stockLevel_SUM_LTE: Int
+}
+
+input WidgetTypeWidgetsUpdateConnectionInput {
+  node: WidgetUpdateInput
+}
+
+input WidgetTypeWidgetsUpdateFieldInput {
+  where: WidgetTypeWidgetsConnectionWhere
+  create: [WidgetTypeWidgetsCreateFieldInput!]
+  connect: [WidgetTypeWidgetsConnectFieldInput!]
+  update: WidgetTypeWidgetsUpdateConnectionInput
+  delete: [WidgetTypeWidgetsDeleteFieldInput!]
+  disconnect: [WidgetTypeWidgetsDisconnectFieldInput!]
+}
+
+input WidgetUpdateInput {
+  name: String
+  stockLevel: Int
+  stockLevel_INCREMENT: Int
+  stockLevel_DECREMENT: Int
+  manufacturer: WidgetManufacturerUpdateFieldInput
+  type: WidgetTypeUpdateFieldInput
+}
+
+input WidgetWhere {
+  OR: [WidgetWhere!]
+  AND: [WidgetWhere!]
+  NOT: WidgetWhere
+  id: ID
+  id_NOT: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_IN: [ID!]
+  id_NOT_IN: [ID!] @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_CONTAINS: ID
+  id_STARTS_WITH: ID
+  id_ENDS_WITH: ID
+  id_NOT_CONTAINS: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_NOT_STARTS_WITH: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  id_NOT_ENDS_WITH: ID @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name: String
+  name_NOT: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_IN: [String]
+  name_NOT_IN: [String] @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_CONTAINS: String
+  name_STARTS_WITH: String
+  name_ENDS_WITH: String
+  name_NOT_CONTAINS: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_NOT_STARTS_WITH: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  name_NOT_ENDS_WITH: String @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  stockLevel: Int
+  stockLevel_NOT: Int @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  stockLevel_IN: [Int]
+  stockLevel_NOT_IN: [Int] @deprecated(reason: "Negation filters will be deprecated, use the NOT operator to achieve the same behavior")
+  stockLevel_LT: Int
+  stockLevel_LTE: Int
+  stockLevel_GT: Int
+  stockLevel_GTE: Int
+  manufacturer: ManufacturerWhere
+  manufacturer_NOT: ManufacturerWhere
+  manufacturerAggregate: WidgetManufacturerAggregateInput
+  type: WidgetTypeWhere
+  type_NOT: WidgetTypeWhere
+  typeAggregate: WidgetTypeAggregateInput
+  manufacturerConnection: WidgetManufacturerConnectionWhere
+  manufacturerConnection_NOT: WidgetManufacturerConnectionWhere
+  typeConnection: WidgetTypeConnectionWhere
+  typeConnection_NOT: WidgetTypeConnectionWhere
+}
